@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Photos</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f3f5ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #f9faff;
+      border-radius: 10px;
+      padding: 40px;
+      width: 420px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .container h2 {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .container p {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+     .nav {
+      margin-bottom: 30px;
+    }
+
+    .nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #ccc;
+    }
+
+    .nav a.active {
+      color: #3f51b5;
+    }
+
+    .upload-box {
+      border: 2px dashed #a6a9f5;
+      padding: 40px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      color: #888;
+      font-size: 0.95em;
+    }
+
+    .upload-box:hover {
+      background-color: #f0f3ff;
+    }
+
+    .upload-icon {
+      font-size: 2em;
+      margin-bottom: 10px;
+      color: #6c6fee;
+    }
+
+    .btn-upload {
+      background-color: #3a54f5;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin-top: 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-upload:hover {
+      background-color: #2e44cd;
+    }
+
+    .url-box {
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .url-box label {
+      font-size: 0.9em;
+      font-weight: 600;
+    }
+
+    .url-copy {
+      display: flex;
+      margin-top: 8px;
+    }
+
+    .url-copy input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px 0 0 6px;
+      border: 1px solid #ccc;
+      font-size: 0.9em;
+    }
+
+    .url-copy button {
+      padding: 8px 14px;
+      background-color: #6c6fee;
+      color: white;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .url-copy button:hover {
+      background-color: #5a5ad6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Upload Photos</h2>
+    <p>Upload selfies, memes, or any fun pictures here.</p>
+<!--
+    <div class="tabs">
+      <a href="/upload" class="active">Upload</a>
+      <a href="/images">Images</a>
+    </div>
+
+    -->
+    <div class="nav">
+    <a href="/upload" class="active">Upload</a>
+    <a href="/images">Images</a>
+  </div>
+
+    <div id="uploadBox" class="upload-box">
+        <div class="upload-icon">📤</div>
+        <div>Select a file or drag and drop here</div>
+        <div style="margin-top: 6px; font-size: 0.8em;">
+          Only support: .jpg, .png, and .gif<br>
+          Maximum file size is 5MB
+        </div>
+    </div>
+
+<!-- Скрытый input для fallback -->
+<input type="file" id="hiddenFileInput" accept=".jpg,.jpeg,.png,.gif" style="display: none;" />
+
+
+
+<form id="uploadForm" action="/upload/" enctype="multipart/form-data" method="post">
+  <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png,.gif" style="display: none;" required>
+  <button type="button" class="btn-upload" onclick="document.getElementById('fileInput').click();">
+    BROWSE YOUR FILE
+  </button>
+</form>
+
+    <div id="uploadResult" style="margin-top: 10px; font-weight: bold;"></div>
+
+
+    <div class="url-box">
+      <label>Current Upload</label>
+      <div class="url-copy">
+        <input type="text" placeholder="https://" id="upload-url" readonly />
+        <button onclick="copyToClipboard()">COPY</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const fileInput = document.getElementById('fileInput');
+  const form = document.getElementById('uploadForm');
+  const resultDiv = document.getElementById('uploadResult');
+  const urlInput = document.getElementById('upload-url');
+  const uploadBox = document.getElementById('uploadBox');
+  const hiddenInput = document.getElementById('hiddenFileInput');
+  const maxSizeBytes = 5 * 1024 * 1024;
+
+  // Общая функция загрузки файла
+  function handleFileUpload(file) {
+    if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+      alert("Unsupported file format.");
+      return;
+    }
+
+    if (file.size > maxSizeBytes) {
+      alert("File is too large (max 5MB).");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.filename) {
+        resultDiv.style.color = "green";
+        resultDiv.textContent = "✅ Upload Success";
+        urlInput.value = `${window.location.origin}/all_images/${data.filename}`;
+      } else {
+        resultDiv.style.color = "red";
+        resultDiv.textContent = "❌ Upload Failed";
+      }
+    })
+    .catch(() => {
+      resultDiv.style.color = "red";
+      resultDiv.textContent = "❌ Network Error";
+    });
+  }
+
+  // Выбор файла по input
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      handleFileUpload(fileInput.files[0]);
+    }
+  });
+
+  // Выбор через скрытый input (по клику на дроп-зону)
+  hiddenInput.addEventListener('change', () => {
+    if (hiddenInput.files.length > 0) {
+      handleFileUpload(hiddenInput.files[0]);
+    }
+  });
+
+  // Подсветка drag-and-drop
+  ['dragenter', 'dragover'].forEach(evt =>
+    uploadBox.addEventListener(evt, e => {
+      e.preventDefault();
+      uploadBox.classList.add('highlight');
+    })
+  );
+
+  ['dragleave', 'drop'].forEach(evt =>
+    uploadBox.addEventListener(evt, e => {
+      e.preventDefault();
+      uploadBox.classList.remove('highlight');
+    })
+  );
+
+  // Обработка дропа файла
+  uploadBox.addEventListener('drop', e => {
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  });
+
+  // Клик по дроп-зоне — открыть input
+  uploadBox.addEventListener('click', () => hiddenInput.click());
+
+  // Отключаем открытие файла в окне браузера по умолчанию
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', e => e.preventDefault());
+
+  // Копирование в буфер
+  function copyToClipboard() {
+    const input = document.getElementById("upload-url");
+    const value = input.value.trim();
+
+    if (!value) {
+      alert("Empty link");
+    } else {
+      input.select();
+      document.execCommand("copy");
+      alert("Copied!");
+    }
+  }
+</script>
+
+</body>
+</html>

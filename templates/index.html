@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cat Showcase</title>
+  <!--<link rel="stylesheet" href="style.css" /> -->
+    <style>
+        body {
+  margin: 0;
+  background-color: #121212;
+  font-family: Arial, sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+}
+
+   h2 {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 0.9em;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+    }
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #3a54f5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #2d43cc;
+}
+
+.image-box {
+  margin-top: 40px;
+}
+
+.image-box img {
+  max-width: 300px;
+  height: auto;
+}
+    </style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Upload Photos</h2>
+      <p>Upload selfies, memes, or any fun pictures here.</p>
+      <button onclick="window.location.href='/upload/'">TAIL-ENT SHOWCASE</button>
+    </div>
+    <div class="image-box">
+            <img alt="Random Cat" id="randomImage" src="static/images/cat1.jpg" />
+    </div>
+  </div>
+    <script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const imageList = [
+      "cat1.jpg",
+      "cat2.jpg",
+      "cat3.jpg"
+    ];
+
+    const randomIndex = Math.floor(Math.random() * imageList.length);
+    const selectedImage = imageList[randomIndex];
+
+    const imgElement = document.getElementById("randomImage");
+    imgElement.src = `static/images/${selectedImage}`;
+  });
+    </script>
+</body>
+</html>

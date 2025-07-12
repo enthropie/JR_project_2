@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Photos</title>
+  <style>
+     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f5ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    h2 {
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .nav {
+      margin-bottom: 30px;
+    }
+
+    .nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #ccc;
+    }
+
+    .nav a.active {
+      color: #3f51b5;
+    }
+
+    table {
+      background-color: white;
+      border-collapse: collapse;
+      width: 1000px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 15px;
+    }
+
+
+    th {
+      background-color: #f0f0f0;
+    }
+
+    tr:not(:last-child) {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .delete-button {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .delete-icon {
+      background-color: #ffcccc;
+      border-radius: 50%;
+      padding: 6px 8px;
+      display: inline-block;
+    }
+
+    .delete-icon::before {
+      content: "🗑️";
+    }
+
+    .image-icon::before {
+      content: "🖼️";
+      margin-right: 8px;
+      display: inline-block;
+    }
+
+    a.url-link {
+      color: #3f51b5;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+ <!-- <h1>Upload Photos</h1>
+  <p>Upload selfies, memes, or any fun pictures here.</p> -->
+
+    <h2>Upload Photos</h2>
+    <p>Upload selfies, memes, or any fun pictures here.</p>
+
+
+  <div class="nav">
+    <a href="/upload">Upload</a>
+    <a href="/images" class="active">Images</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Url</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for file in files %}
+      <tr>
+        <td><span class="image-icon"></span>{{ file }}</td>
+        <td><a class="url-link" href="/all_images/{{ file }}" target="_blank">/all_images/{{ file }}</a></td>
+        <td>
+          <form method="post" action="/delete/{{ file }}" onsubmit="return confirm('Delete {{ file }}?')">
+            <button class="delete-button" type="submit"><span class="delete-icon"></span></button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
