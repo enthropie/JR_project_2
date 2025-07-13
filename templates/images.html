@@ -6,27 +6,38 @@
   <style>
      body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f3f5ff;
+      background-color: #white;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding: 0;
+      
+      margin: 0;
+      color: #111;
+      justify-content: center;
+
+    }
+    
+    .container {
+      background: #fCfCff;
+      border-radius: 10px;
       padding: 40px;
+      width: 1020px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
     }
 
-    h1 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-    h2 {
+
+   .container h2 {
       margin-bottom: 4px;
       font-weight: 600;
+      text-align: center;
     }
-
-    p {
+    .container p {
       font-size: 0.9em;
       color: #666;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .nav {
@@ -41,7 +52,7 @@
     }
 
     .nav a.active {
-      color: #3f51b5;
+      color: #4863CE;
     }
 
     table {
@@ -58,9 +69,6 @@
     }
 
 
-    th {
-      background-color: #f0f0f0;
-    }
 
     tr:not(:last-child) {
       border-bottom: 1px solid #ddd;
@@ -73,7 +81,7 @@
     }
 
     .delete-icon {
-      background-color: #ffcccc;
+      background-color: #FAEAEE;
       border-radius: 50%;
       padding: 6px 8px;
       display: inline-block;
@@ -84,7 +92,7 @@
     }
 
     .image-icon::before {
-      content: "🖼️";
+      content: "🟦";
       margin-right: 8px;
       display: inline-block;
     }
@@ -98,7 +106,7 @@
 <body>
  <!-- <h1>Upload Photos</h1>
   <p>Upload selfies, memes, or any fun pictures here.</p> -->
-
+ <div class="container">
     <h2>Upload Photos</h2>
     <p>Upload selfies, memes, or any fun pictures here.</p>
 
@@ -130,5 +138,6 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
 </body>
 </html>
