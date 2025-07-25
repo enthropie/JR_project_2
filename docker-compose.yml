@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    container_name: image_server_app
+    restart: unless-stopped
+    volumes:
+      - ./images:/app/images
+      - ./logs:/app/logs
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  images:
+  logs:
