@@ -1,0 +1,41 @@
+# --- Python ---
+pycache/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+*.pytest_cache/
+*.mypy_cache/
+*.coverage
+*.log
+*.sqlite3
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# --- PyCharm ---
+.idea/
+*.iml
+
+# --- Docker ---
+*.env
+docker-compose.override.yml
+*.log
+db_data/
+backups/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- VSCode ---
+.vscode/
+
+# --- Other ---
+*.swp
+*.swo
