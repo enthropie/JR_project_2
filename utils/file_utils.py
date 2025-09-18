@@ -3,7 +3,7 @@ import uuid
 
 
 ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif']
-MAX_FILE_SIZE = 50 * 1024
+MAX_FILE_SIZE = 50 * 1024 * 1024
 
 
 def is_allowed_file(filename: Path) -> bool:

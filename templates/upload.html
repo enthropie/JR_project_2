@@ -143,7 +143,7 @@
 
     <div class="nav">
     <a href="/upload" class="active">Upload</a>
-    <a href="/images">Images</a>
+    <a href="/images-list">Images</a>
   </div>
 
     <div id="uploadBox" class="upload-box">
@@ -157,7 +157,6 @@
 
 <!-- Скрытый input для fallback -->
 <input type="file" id="hiddenFileInput" accept=".jpg,.jpeg,.png,.gif" style="display: none;" />
-
 
 
 <form id="uploadForm" action="/upload/" enctype="multipart/form-data" method="post">
@@ -209,6 +208,7 @@
     })
     .then(response => response.json())
     .then(data => {
+      console.log("Server response:", data);
       if (data.filename) {
         resultDiv.style.color = "green";
         resultDiv.textContent = "✅ Upload Success";

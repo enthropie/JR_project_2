@@ -1,17 +1,19 @@
-# 1
-pip install fastapi jinja2 uvicorn pillow
+**Сервер изображений**
 
-# 2
-pip install fastapi[all] uvicorn pillow
+**Запуск приложения:**
 
+1. docker-compose build
+2. docker-compose up
+3. Приложение доступно в браузере по адресу http://localhost:8000/, pgadmin - http://localhost:8080/
 
-Внесенные изменения:
-1) изменен дизайн страниц
-2) на главной странице при запуске приложения выбирается одна из статичных картинок
-3) реализован drag-n-drop файла
-4) реализовано копирование пути к загруженному файлу по кнопке (если путь не пустой)
-5) реализован вывод имеющегося списка файлов с возможностью их удаления
-6) отображается статус загрузки файла
+**Резервное копирование данных:**
 
+Снять бекап на windows через powershell хостовой машины с docker:
+cd [в_папку_проекта]
+docker exec -t image_server_db pg_dump -U postgres images_db > ".\backups\backup_$(Get-Date -Format yyyy-MM-dd_HHmmss).sql"
 
-Не релизовано (в планах): вынести стили в единый css файл из локальных файлов.
+Альтернатива для других ОС: запустить файл backup.sh
+
+**Документация и ТЗ:**
+
+https://drive.google.com/file/d/1ro605PYMKynE-iFXWi0-zVGISjgIOo7N/view

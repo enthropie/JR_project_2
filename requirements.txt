@@ -13,11 +13,13 @@ httpx==0.28.1
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.6
+logging==0.4.9.6
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 mdurl==0.1.2
 orjson==3.10.18
 pillow==11.2.1
+psycopg2-binary==2.9.10
 pydantic==2.11.5
 pydantic-extra-types==2.10.5
 pydantic-settings==2.9.1

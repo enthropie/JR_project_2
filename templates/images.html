@@ -1,38 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Upload Photos</title>
+  <title>Список изображений</title>
   <style>
-     body {
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #white;
+      background-color: #f9f9f9;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0;
-      
       margin: 0;
+      padding: 0;
       color: #111;
-      justify-content: center;
-
     }
-    
+
     .container {
       background: #fCfCff;
       border-radius: 10px;
       padding: 40px;
-      width: 1020px;
+      width: 1320px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       text-align: center;
+      margin-top: 20px;
     }
 
-
-   .container h2 {
+    .container h2 {
       margin-bottom: 4px;
       font-weight: 600;
       text-align: center;
     }
+
     .container p {
       font-size: 0.9em;
       color: #666;
@@ -58,17 +56,20 @@
     table {
       background-color: white;
       border-collapse: collapse;
-      width: 1000px;
+      width: 1300px;
       border-radius: 10px;
       overflow: hidden;
     }
 
     th, td {
       text-align: left;
-      padding: 15px;
+      padding: 12px 15px;
+      font-size: 0.95em;
     }
 
-
+    thead {
+      background-color: #f0f0f0;
+    }
 
     tr:not(:last-child) {
       border-bottom: 1px solid #ddd;
@@ -92,8 +93,8 @@
     }
 
     .image-icon::before {
-      content: "🟦";
-      margin-right: 8px;
+      content: "🖼️";
+      margin-right: 6px;
       display: inline-block;
     }
 
@@ -101,43 +102,91 @@
       color: #3f51b5;
       text-decoration: none;
     }
+
+    .pagination {
+      margin-top: 20px;
+    }
+
+    .pagination a {
+      display: inline-block;
+      margin: 0 5px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      background-color: #4863CE;
+      color: white;
+      font-size: 0.9em;
+    }
+
+    .pagination a.disabled {
+      background-color: #ccc;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
- <!-- <h1>Upload Photos</h1>
-  <p>Upload selfies, memes, or any fun pictures here.</p> -->
- <div class="container">
-    <h2>Upload Photos</h2>
-    <p>Upload selfies, memes, or any fun pictures here.</p>
+  <div class="container">
+    <h2>Список изображений</h2>
+    <p>Все загруженные изображения и их метаданные</p>
 
+    <div class="nav">
+      <a href="/upload">Upload</a>
+      <a href="/images-list" class="active">Images</a>
+    </div>
 
-  <div class="nav">
-    <a href="/upload">Upload</a>
-    <a href="/images" class="active">Images</a>
-  </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Имя файла</th>
+          <th>Оригинальное имя</th>
+          <th>Размер (байт)</th>
+          <th>Дата загрузки</th>
+          <th>Тип</th>
+          <th>Ссылка</th>
+          <th>Удалить</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for image in images %}
+        <tr>
+          <td>{{ image.id }}</td>
+          <td><span class="image-icon"></span>{{ image.filename }}</td>
+          <td>{{ image.original_name }}</td>
+          <td>{{ image.size }}</td>
+          <td>{{ image.upload_time }}</td>
+          <td>{{ image.file_type }}</td>
+          <td><a class="url-link" href="/all_images/{{ image.filename }}" target="_blank">Открыть</a></td>
+          <td>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Url</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for file in files %}
-      <tr>
-        <td><span class="image-icon"></span>{{ file }}</td>
-        <td><a class="url-link" href="/all_images/{{ file }}" target="_blank">/all_images/{{ file }}</a></td>
-        <td>
-          <form method="post" action="/delete/{{ file }}" onsubmit="return confirm('Delete {{ file }}?')">
-            <button class="delete-button" type="submit"><span class="delete-icon"></span></button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+            <form method="get" action="/delete/{{ image.id }}"
+                  onsubmit="return confirm('Удалить {{ image.original_name }}?')">
+              <input type="hidden" name="page" value="{{ page }}">
+              <button class="delete-button" type="submit"><span class="delete-icon"></span></button>
+            </form>
+
+            <!-- <form method="get" action="/delete/{{ image.id }}" onsubmit="return confirm('Удалить {{ image.original_name }}?')">
+              <button class="delete-button" type="submit"><span class="delete-icon"></span></button>
+            </form> -->
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      {% if page > 1 %}
+        <a href="/images-list?page={{ page - 1 }}">« Предыдущая</a>
+      {% else %}
+        <a class="disabled">« Предыдущая</a>
+      {% endif %}
+
+      {% if has_next %}
+        <a href="/images-list?page={{ page + 1 }}">Следующая »</a>
+      {% else %}
+        <a class="disabled">Следующая »</a>
+      {% endif %}
+    </div>
   </div>
 </body>
 </html>

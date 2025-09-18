@@ -10,6 +10,34 @@ services:
       - "8000"
     ports:
       - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    container_name: image_server_db
+    environment:
+      POSTGRES_DB: images_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    restart: unless-stopped
 
 networks:
   default:
@@ -18,3 +46,4 @@ networks:
 volumes:
   images:
   logs:
+  db_data:
